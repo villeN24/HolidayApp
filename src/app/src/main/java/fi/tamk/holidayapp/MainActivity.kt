@@ -29,10 +29,10 @@ class MainActivity : AppCompatActivity() {
             testList)
         this.spinner.adapter = adapter
         this.filterList = findViewById(R.id.filterList)
-        this.filterList.addTextChangedListener { if(filterList.text.toString() != "") updateList() }
+        this.filterList.addTextChangedListener { updateList() }
     }
     private fun updateList() {
-        val updatedList = testList.filter { it.contains(filterList.text.toString()) }
+        val updatedList = testList.filter { it.contains(filterList.text.toString(), ignoreCase = true) }
         adapter = ArrayAdapter<String>(
             this,
             R.layout.list_item,
