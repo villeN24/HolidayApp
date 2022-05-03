@@ -7,15 +7,24 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <EditText
+        android:id="@+id/filterList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="filter list"
+        android:inputType="textPersonName" />
+
     <Spinner
         android:id="@+id/spinnerList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="45dp"
         android:minHeight="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInput" />
+        android:paddingRight="14dp"
+        android:popupElevation="3dp"
+        android:stateListAnimator="@drawable/spinner_ani"
+        />
 
 
 </LinearLayout>
