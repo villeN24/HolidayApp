@@ -14,7 +14,9 @@ class HolidayList : AppCompatActivity() {
         this.selectedCountry = findViewById(R.id.selectedCountry)
         val extras : Bundle? = intent.extras
         if (extras != null) {
-            selectedCountry.text = extras.getString("country")
+            selectedCountry.text = "${extras.getString("country")} ${extras.getString("code")}"
+            "https://calendarific.com/api/v2/holidays?&api_key=82412897a0bd6afebfd64c44eab3013ba5c88a52&country=US"
+
         }
     }
 }

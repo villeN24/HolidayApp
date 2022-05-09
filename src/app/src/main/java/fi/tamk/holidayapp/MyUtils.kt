@@ -3,6 +3,7 @@ package fi.tamk.holidayapp
 import android.content.Context
 import android.util.Log
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.json.JSONObject
 import java.io.BufferedReader
@@ -18,17 +19,22 @@ data class ResponseObject(var response : ResponseList? = null)
 data class ResponseList(var countries : MutableList<Country>? = null)
 
 @JsonIgnoreProperties(ignoreUnknown  = true)
-data class Country(var country_name : String? = null)
+data class Country(
+    @JsonProperty("country_name") var country_name : String? = null,
+    @JsonProperty("iso-3166") var countryCode : String? = null) {
+    override fun toString(): String {
+        return country_name ?: ""
+    }
+}
 
-fun downloadUrlAsync(context : Context, url : String, callback : (data : MutableList<String>?) -> Unit) {
+fun fetchCountryList(context : Context, url : String, callback : (data : MutableList<Country>?) -> Unit) {
     thread {
         val json : String? = getUrl(url)
-        val responseObj : ResponseObject = ObjectMapper().readValue(json, ResponseObject::class.java)
-        val responseList : ResponseList? = responseObj.response
+        val response : ResponseObject = ObjectMapper().readValue(json, ResponseObject::class.java)
+        val responseList : ResponseList? = response.response
         val countries : MutableList<Country>? = responseList?.countries
-        var countryNames = mutableListOf<String>()
-        countries?.forEach { countryNames.add(it.country_name.toString()) }
-        callback(countryNames)
+        Log.d("TAG", countries.toString())
+        callback(countries)
     }
 }
 
@@ -49,3 +55,4 @@ fun getUrl(url : String) : String? {
     }
     return result
 }
+
