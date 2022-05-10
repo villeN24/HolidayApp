@@ -27,10 +27,10 @@ class MainActivity : AppCompatActivity() {
         this.filterList = findViewById(R.id.filterList)
         this.seeHolidays = findViewById(R.id.seeHolidays)
         this.filterList.addTextChangedListener { updateList() }
-        fetchCountryList(this, "https://calendarific.com/api/v2/countries?api_key=82412897a0bd6afebfd64c44eab3013ba5c88a52") {
-            if (it != null) countryList = it
-            updateList()
-        }
+//        fetchCountryList(this) {
+//            if (it != null) countryList = it
+//            updateList()
+//        }
         this.spinner.onItemSelectedListener = object :
         AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
