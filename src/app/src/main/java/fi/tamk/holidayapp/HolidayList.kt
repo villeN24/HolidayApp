@@ -53,10 +53,15 @@ class MyAdapter(private val context : Activity, private val holidayList : Mutabl
 
         var name : TextView = view.findViewById(R.id.name)
         var desc : TextView = view.findViewById(R.id.desc)
+        var date : TextView = view.findViewById(R.id.date)
+        var type : TextView = view.findViewById(R.id.type)
 
         name.text = holidayList[position].name
         desc.text = holidayList[position].description
-
+        date.text = "${holidayList[position].date?.datetime?.day}." +
+                "${holidayList[position].date?.datetime?.month}." +
+                "${holidayList[position].date?.datetime?.year}"
+        type.text = "Type of holiday: ${holidayList[position].type?.get(0)?.type}"
 
         return view
     }
