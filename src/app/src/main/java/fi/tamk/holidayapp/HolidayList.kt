@@ -2,6 +2,7 @@ package fi.tamk.holidayapp
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import android.widget.BaseAdapter
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
 import fi.tamk.holidayapp.databinding.ActivityMainBinding
 
 
@@ -26,6 +28,22 @@ class HolidayList : AppCompatActivity() {
         this.holidayList = findViewById(R.id.holidayList)
         holidayAdapter = MyAdapter(this, mutableListOf<Holiday>())
         holidayList.adapter = holidayAdapter
+        holidayList.setOnItemClickListener { parent, view, position, id ->
+            val holidayName = holidayAdapter.getItem(position)?.name.toString()
+            val holidayDesc = holidayAdapter.getItem(position)?.description.toString()
+            val holidayDate = "${holidayAdapter.getItem(position)?.date?.datetime?.day}." +
+                    "${holidayAdapter.getItem(position)?.date?.datetime?.month}." +
+                    "${holidayAdapter.getItem(position)?.date?.datetime?.year}"
+            val holidayType = holidayAdapter.getItem(position)?.type?.get(0)?.type.toString()
+
+            val intent = Intent(this, HolidayCard::class.java)
+            intent.putExtra("name", holidayName)
+            intent.putExtra("desc", holidayDesc)
+            intent.putExtra("date", holidayDate)
+            intent.putExtra("type", holidayType)
+            startActivity(intent)
+        }
+
 
 //        val extras : Bundle? = intent.extras
 //        selectedCountry.text = "${extras.getString("country")} ${extras.getString("code")}"

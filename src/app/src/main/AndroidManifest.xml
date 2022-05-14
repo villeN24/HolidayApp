@@ -22,6 +22,7 @@
         </activity>
 
         <activity android:name=".HolidayList"/>
+        <activity android:name=".HolidayCard"/>
 
     </application>
 
