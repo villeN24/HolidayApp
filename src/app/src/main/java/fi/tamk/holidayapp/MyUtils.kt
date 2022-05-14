@@ -2,13 +2,16 @@ package fi.tamk.holidayapp
 
 import android.content.ClipDescription
 import android.content.Context
+import android.os.Parcelable
 import android.util.Log
+import androidx.versionedparcelable.VersionedParcelize
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.io.Serializable
 import java.net.HttpURLConnection
 import java.net.URL
 import kotlin.concurrent.thread
@@ -39,16 +42,16 @@ data class ResponseObjectHolidays(var response : HolidayListObj? = null)
 data class HolidayListObj(var holidays : MutableList<Holiday>? = null)
 
 @JsonIgnoreProperties(ignoreUnknown  = true)
-data class Holiday(var name : String? = null, var description : String? = null, var date : HolidayDate? = null, var type : MutableList<HolidayType>? = null)
+data class Holiday(var name : String? = null, var description : String? = null, var date : HolidayDate? = null, var type : MutableList<HolidayType>? = null) : Serializable
 
 @JsonIgnoreProperties(ignoreUnknown  = true)
-data class HolidayDate(var datetime : HolidayDateTime? = null)
+data class HolidayDate(var datetime : HolidayDateTime? = null) : Serializable
 
 @JsonIgnoreProperties(ignoreUnknown  = true)
-data class HolidayDateTime(var year : Int? = null, var month : Int? = null, var day : Int? = null, var hour : Int? = null, var minute : Int? = null, var second : Int? = null)
+data class HolidayDateTime(var year : Int? = null, var month : Int? = null, var day : Int? = null, var hour : Int? = null, var minute : Int? = null, var second : Int? = null) : Serializable
 
 @JsonIgnoreProperties(ignoreUnknown  = true)
-data class HolidayType(var type : String? = null)
+data class HolidayType(var type : String? = null) : Serializable
 
 fun fetchCountryList(context : Context, callback : (data : MutableList<Country>?) -> Unit) {
     thread {

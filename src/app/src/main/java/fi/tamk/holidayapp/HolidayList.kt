@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
 import fi.tamk.holidayapp.databinding.ActivityMainBinding
 
-
 class HolidayList : AppCompatActivity() {
     lateinit var holidayList : ListView
     lateinit var holidayAdapter : MyAdapter
@@ -29,18 +28,8 @@ class HolidayList : AppCompatActivity() {
         holidayAdapter = MyAdapter(this, mutableListOf<Holiday>())
         holidayList.adapter = holidayAdapter
         holidayList.setOnItemClickListener { parent, view, position, id ->
-            val holidayName = holidayAdapter.getItem(position)?.name.toString()
-            val holidayDesc = holidayAdapter.getItem(position)?.description.toString()
-            val holidayDate = "${holidayAdapter.getItem(position)?.date?.datetime?.day}." +
-                    "${holidayAdapter.getItem(position)?.date?.datetime?.month}." +
-                    "${holidayAdapter.getItem(position)?.date?.datetime?.year}"
-            val holidayType = holidayAdapter.getItem(position)?.type?.get(0)?.type.toString()
-
             val intent = Intent(this, HolidayCard::class.java)
-            intent.putExtra("name", holidayName)
-            intent.putExtra("desc", holidayDesc)
-            intent.putExtra("date", holidayDate)
-            intent.putExtra("type", holidayType)
+            intent.putExtra("holiday", holidayAdapter.getItem(position))
             startActivity(intent)
         }
 

@@ -1,6 +1,8 @@
 package fi.tamk.holidayapp
 
 import android.os.Bundle
+import android.os.Parcelable
+import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 
@@ -19,10 +21,13 @@ class HolidayCard : AppCompatActivity() {
         this.dateView = findViewById(R.id.date)
         this.typeView = findViewById(R.id.type)
 
-        val extras : Bundle? = intent.extras
-        nameView.text = extras?.getString("name")
-        descView.text = extras?.getString("desc")
-        dateView.text = extras?.getString("date")
-        typeView.text = extras?.getString("type")
+        val holiday = intent.getSerializableExtra("holiday") as Holiday
+        nameView.text = holiday.name
+        descView.text = holiday.description
+        dateView.text = "${ holiday.date?.datetime?.day }.${ holiday.date?.datetime?.month }.${ holiday.date?.datetime?.year } "
+        typeView.text = holiday.type?.get(0)?.type
+        if (holiday.date?.datetime?.hour != null) {
+            dateView.text = dateView.text.toString() + "${ holiday.date?.datetime?.hour }:${ holiday.date?.datetime?.minute }:${ holiday.date?.datetime?.second } "
+        }
     }
 }
