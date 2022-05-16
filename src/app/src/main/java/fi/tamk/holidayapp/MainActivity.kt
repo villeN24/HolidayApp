@@ -1,5 +1,6 @@
 package fi.tamk.holidayapp
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.wifi.WifiManager
@@ -8,6 +9,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.addTextChangedListener
 
 val allCountries = "https://calendarific.com/api/v2/countries?api_key=82412897a0bd6afebfd64c44eab3013ba5c88a52"
@@ -17,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var adapter : ArrayAdapter<Country>
     lateinit var filterList : EditText
     lateinit var seeHolidays : Button
+    lateinit var seeFilter : Button
     var countryList = mutableListOf<Country>()
     var selectedCountry : Country? = null
 
@@ -26,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         this.spinner = findViewById(R.id.spinnerList)
         this.filterList = findViewById(R.id.filterList)
         this.seeHolidays = findViewById(R.id.seeHolidays)
+        this.seeFilter = findViewById(R.id.seeFilters)
         this.filterList.addTextChangedListener { updateList() }
 //        fetchCountryList(this) {
 //            if (it != null) countryList = it
@@ -41,6 +45,7 @@ class MainActivity : AppCompatActivity() {
                 TODO("Not yet implemented")
             }
         }
+
     }
     private fun updateList() {
         if (countryList != null) {
@@ -58,6 +63,19 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, HolidayList::class.java)
         intent.putExtra("country", selectedCountry?.country_name)
         intent.putExtra("code", selectedCountry?.countryCode)
+        startActivity(intent)
+    }
+
+    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            val data : Intent? = it.data
+            // TODO DATA
+        }
+    }
+
+    fun moveToFilterScreen(seeFilters : View) {
+        val intent = Intent(this, FilterActivity::class.java)
+//        resultLauncher.launch(intent)
         startActivity(intent)
     }
 }

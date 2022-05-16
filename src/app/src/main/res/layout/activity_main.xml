@@ -49,5 +49,17 @@
         app:layout_constraintStart_toStartOf="parent"
         android:onClick="moveToHolidays"/>
 
+    <Button
+        android:id="@+id/seeFilters"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:maxWidth="100dp"
+        android:text="Set more filters"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:onClick="moveToFilterScreen"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
