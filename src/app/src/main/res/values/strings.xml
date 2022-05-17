@@ -16,4 +16,13 @@
         <item>November</item>
         <item>December</item>
     </string-array>
+
+    <string-array name="categories">
+        <item>All</item>
+        <item>National holidays</item>
+        <item>Local holidays</item>
+        <item>Religious holidays</item>
+        <item>Observance holidays</item>
+    </string-array>
+
 </resources>

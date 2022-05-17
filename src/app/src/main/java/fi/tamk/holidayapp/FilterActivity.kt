@@ -14,12 +14,14 @@ class FilterActivity : AppCompatActivity() {
     lateinit var dayPicker : NumberPicker
     lateinit var yearTitle : TextView
     lateinit var yearPicker : NumberPicker
+    lateinit var categoryTitle : TextView
+    lateinit var categoryPicker : NumberPicker
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_filter)
 
-        var dayList = mutableListOf<String>("All")
+        var dayList = mutableListOf("All")
         for (i in 1 .. 31) {
             dayList.add(i.toString())
         }
@@ -45,5 +47,12 @@ class FilterActivity : AppCompatActivity() {
         yearPicker.minValue = 1970
         yearPicker.maxValue = 2049
         yearPicker.value = 2022
+
+        val categories = resources.getStringArray(R.array.categories)
+        this.categoryTitle = findViewById(R.id.categoryTitle)
+        this.categoryPicker = findViewById(R.id.categoryPicker)
+        categoryPicker.minValue = 0
+        categoryPicker.maxValue = 4
+        categoryPicker.displayedValues = categories
     }
 }
