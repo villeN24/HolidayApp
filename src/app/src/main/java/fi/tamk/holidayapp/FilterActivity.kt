@@ -9,12 +9,25 @@ import org.w3c.dom.Text
 
 class FilterActivity : AppCompatActivity() {
     lateinit var monthTitle : TextView
-    lateinit var monthSpinner : Spinner
     lateinit var monthPicker : NumberPicker
+    lateinit var dayTitle : TextView
+    lateinit var dayPicker : NumberPicker
+    lateinit var yearTitle : TextView
+    lateinit var yearPicker : NumberPicker
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_filter)
+
+        var dayList = mutableListOf<String>("All")
+        for (i in 1 .. 31) {
+            dayList.add(i.toString())
+        }
+        this.dayTitle = findViewById(R.id.dayTitle)
+        this.dayPicker = findViewById(R.id.dayPicker)
+        dayPicker.minValue = 0
+        dayPicker.maxValue = 31
+        dayPicker.displayedValues = dayList.toTypedArray()
 
         val months = resources.getStringArray(R.array.months)
         this.monthTitle = findViewById(R.id.monthTitle)
@@ -27,5 +40,10 @@ class FilterActivity : AppCompatActivity() {
             monthTitle.text = newVal.toString()
         }
 
+        this.yearTitle = findViewById(R.id.yearTitle)
+        this.yearPicker = findViewById(R.id.yearPicker)
+        yearPicker.minValue = 1970
+        yearPicker.maxValue = 2049
+        yearPicker.value = 2022
     }
 }
