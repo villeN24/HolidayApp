@@ -1,9 +1,11 @@
 package fi.tamk.holidayapp
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import org.w3c.dom.Text
 
@@ -16,6 +18,8 @@ class FilterActivity : AppCompatActivity() {
     lateinit var yearPicker : NumberPicker
     lateinit var categoryTitle : TextView
     lateinit var categoryPicker : NumberPicker
+    lateinit var hintButton : Button
+    lateinit var hintText : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,5 +58,41 @@ class FilterActivity : AppCompatActivity() {
         categoryPicker.minValue = 0
         categoryPicker.maxValue = 4
         categoryPicker.displayedValues = categories
+
+        this.hintButton = findViewById(R.id.hintButton)
+        hintButton.setOnClickListener {
+
+            val view = View.inflate(this, R.layout.hint_alert, null)
+            this.hintText = view.findViewById(R.id.generalInst)
+            val builder = AlertDialog.Builder(this)
+            builder.setView(view)
+
+            val dialog = builder.create()
+            dialog.show()
+            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+            hintText.text = """
+            When filtering using any of the values, the search
+            will include results that fulfill every condition
+            only. You can select any combination of filters to use.
+
+            Category explanations:
+
+            - National
+              Returns public, federal and bank holidays
+            
+            - Local
+              Returns local, regional and state holidays
+            
+            - Religious
+              Return religious holidays: buddhism, christian,
+              hinduism, muslim, etc
+            
+            - Observance
+              Observance, Seasons, Times
+        """.trimIndent()
+                builder.setPositiveButton("OK") { dialogInterface : DialogInterface, i : Int ->
+                    finish()
+                }
+            }
     }
 }

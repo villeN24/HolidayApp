@@ -97,4 +97,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.978" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/hintButton"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="58dp"
+        android:layout_marginEnd="33dp"
+        app:icon="@drawable/ic_baseline_question_mark_24"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
