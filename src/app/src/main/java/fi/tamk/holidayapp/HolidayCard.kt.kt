@@ -25,7 +25,11 @@ class HolidayCard : AppCompatActivity() {
         nameView.text = holiday.name
         descView.text = holiday.description
         dateView.text = "${ holiday.date?.datetime?.day }.${ holiday.date?.datetime?.month }.${ holiday.date?.datetime?.year } "
-        typeView.text = holiday.type?.get(0)?.type
+        var typeList : ArrayList<String> = arrayListOf()
+        holiday.type?.forEach {
+            typeList.add(it.type.toString())
+        }
+        typeView.text = "Categories: ${typeList.joinToString(", ")}"
         if (holiday.date?.datetime?.hour != null) {
             dateView.text = dateView.text.toString() + "${ holiday.date?.datetime?.hour }:${ holiday.date?.datetime?.minute }:${ holiday.date?.datetime?.second } "
         }

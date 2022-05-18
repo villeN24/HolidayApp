@@ -68,7 +68,12 @@ class MyAdapter(private val context : Activity, private val holidayList : Mutabl
         date.text = "${holidayList[position].date?.datetime?.day}." +
                 "${holidayList[position].date?.datetime?.month}." +
                 "${holidayList[position].date?.datetime?.year}"
-        type.text = "Type of holiday: ${holidayList[position].type?.get(0)?.type}"
+
+        var typeList : ArrayList<String> = arrayListOf()
+        holidayList[position].type?.forEach {
+            typeList.add(it.type.toString())
+        }
+        type.text = "Categories: ${typeList.joinToString(", ")}"
 
         return view
     }
