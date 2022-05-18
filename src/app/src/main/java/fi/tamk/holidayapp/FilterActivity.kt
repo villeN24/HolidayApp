@@ -1,6 +1,7 @@
 package fi.tamk.holidayapp
 
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.View
@@ -59,6 +60,7 @@ class FilterActivity : AppCompatActivity() {
         categoryPicker.maxValue = 4
         categoryPicker.displayedValues = categories
 
+
         this.hintButton = findViewById(R.id.hintButton)
         hintButton.setOnClickListener {
 
@@ -90,9 +92,19 @@ class FilterActivity : AppCompatActivity() {
             - Observance
               Observance, Seasons, Times
         """.trimIndent()
-                builder.setPositiveButton("OK") { dialogInterface : DialogInterface, i : Int ->
-                    finish()
-                }
+            builder.setPositiveButton("OK") { dialogInterface : DialogInterface, i : Int ->
+                finish()
             }
+        }
+    }
+
+    override fun onBackPressed() {
+        val intent = Intent()
+        intent.putExtra("day", dayPicker.value.toString())
+        intent.putExtra("month", monthPicker.value.toString())
+        intent.putExtra("year", yearPicker.value.toString())
+        intent.putExtra("type", categoryPicker.value.toString())
+        setResult(RESULT_OK, intent);
+        super.onBackPressed()
     }
 }

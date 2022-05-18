@@ -14,6 +14,7 @@ import java.io.InputStreamReader
 import java.io.Serializable
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.*
 import kotlin.concurrent.thread
 
 val API_KEY = "82412897a0bd6afebfd64c44eab3013ba5c88a52"
@@ -64,15 +65,27 @@ fun fetchCountryList(context : Context, callback : (data : MutableList<Country>?
     }
 }
 
-fun fetchHolidayList(context : Context, countryCode : String?, year : String?, callback : (data : MutableList<Holiday>?) -> Unit) {
+fun fetchHolidayList(context : Context, countryCode : String?, day : String?, month : String?, year : String?, type : String?, callback : (data : MutableList<Holiday>?) -> Unit) {
     thread {
-        val json : String? = getUrl("https://calendarific.com/api/v2/holidays?&api_key=${API_KEY}&country=${countryCode}&year=${year}")
+        Log.d("MyUtils day", day.toString())
+        Log.d("MyUtils month", month.toString())
+        Log.d("MyUtils type", type.toString())
+
+        var mYear : String = year ?: Calendar.getInstance().get(Calendar.YEAR).toString()
+        var mDay : String? = if ( day != null && day.toString() != "0" ) "&day=${day}" else ""
+        var mMonth : String? = if ( month != null && month.toString() != "0" ) "&month=${month}" else ""
+        var mType = when (type) {
+            "1" -> "&type=national"
+            "2" -> "&type=local"
+            "3" -> "&type=religious"
+            "4" -> "&type=observance"
+            else -> ""
+        }
+        val json : String? = getUrl("https://calendarific.com/api/v2/holidays?&api_key=${API_KEY}&country=${countryCode}&year=${mYear}${mDay}${mMonth}${mType}")
+        Log.d("MyUtils", "https://calendarific.com/api/v2/holidays?&api_key=${API_KEY}&country=${countryCode}&year=${mYear}${mDay}${mMonth}${mType}")
         val response : ResponseObjectHolidays = ObjectMapper().readValue(json, ResponseObjectHolidays::class.java)
         val holidayList : HolidayListObj? = response.response
         val holidays : MutableList<Holiday>? = holidayList?.holidays
-        Log.d("MyUtils", json.toString())
-        Log.d("MyUtils", response.toString())
-        Log.d("MyUtils", holidays?.get(0).toString())
         callback(holidays)
     }
 }

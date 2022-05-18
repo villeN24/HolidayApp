@@ -34,10 +34,10 @@ class HolidayList : AppCompatActivity() {
         }
 
 
-//        val extras : Bundle? = intent.extras
+        val extras : Bundle? = intent.extras
 //        selectedCountry.text = "${extras.getString("country")} ${extras.getString("code")}"
         fetchHolidayList(this, "FI",
-            "2022") {
+            extras?.getString("day"), extras?.getString("month"), extras?.getString("year"), extras?.getString("type")) {
             Log.d("HolidayActivity", it.toString())
             if (it != null) {
                 for (item : Holiday in it) {
