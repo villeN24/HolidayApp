@@ -4,6 +4,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -42,10 +43,6 @@ class FilterActivity : AppCompatActivity() {
         monthPicker.minValue = 0
         monthPicker.maxValue = 12
         monthPicker.displayedValues = months
-
-        monthPicker.setOnValueChangedListener { monthPicker, oldVal, newVal ->
-            monthTitle.text = newVal.toString()
-        }
 
         this.yearTitle = findViewById(R.id.yearTitle)
         this.yearPicker = findViewById(R.id.yearPicker)

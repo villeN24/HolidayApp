@@ -33,19 +33,15 @@ class HolidayList : AppCompatActivity() {
             startActivity(intent)
         }
 
-
         val extras : Bundle? = intent.extras
 //        selectedCountry.text = "${extras.getString("country")} ${extras.getString("code")}"
+//        title = extras?.getString("country")
         fetchHolidayList(this, "FI",
             extras?.getString("day"), extras?.getString("month"), extras?.getString("year"), extras?.getString("type")) {
-            Log.d("HolidayActivity", it.toString())
             if (it != null) {
                 for (item : Holiday in it) {
-                    Log.d("HolidayList", item.toString())
                     runOnUiThread {
-                        for (item : Holiday in it) {
-                            holidayAdapter.add(item)
-                        }
+                        holidayAdapter.add(item)
                     }
                 }
             }
@@ -55,13 +51,19 @@ class HolidayList : AppCompatActivity() {
 class MyAdapter(private val context : Activity, private val holidayList : MutableList<Holiday>) : ArrayAdapter<Holiday>(context, R.layout.holidaylist_item, holidayList) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val inflater : LayoutInflater = LayoutInflater.from(context)
-        val view : View = inflater.inflate(R.layout.holidaylist_item, null)
+        var row : View
 
-        var name : TextView = view.findViewById(R.id.name)
-        var desc : TextView = view.findViewById(R.id.desc)
-        var date : TextView = view.findViewById(R.id.date)
-        var type : TextView = view.findViewById(R.id.type)
+        if (convertView == null) {
+            val inflater : LayoutInflater = LayoutInflater.from(context)
+            row = inflater.inflate(R.layout.holidaylist_item, null)
+        } else {
+            row = convertView
+        }
+
+        var name : TextView = row.findViewById(R.id.name)
+        var desc : TextView = row.findViewById(R.id.desc)
+        var date : TextView = row.findViewById(R.id.date)
+        var type : TextView = row.findViewById(R.id.type)
 
         name.text = holidayList[position].name
         desc.text = holidayList[position].description
@@ -75,7 +77,7 @@ class MyAdapter(private val context : Activity, private val holidayList : Mutabl
         }
         type.text = "Categories: ${typeList.joinToString(", ")}"
 
-        return view
+        return row
     }
 
 }

@@ -67,10 +67,6 @@ fun fetchCountryList(context : Context, callback : (data : MutableList<Country>?
 
 fun fetchHolidayList(context : Context, countryCode : String?, day : String?, month : String?, year : String?, type : String?, callback : (data : MutableList<Holiday>?) -> Unit) {
     thread {
-        Log.d("MyUtils day", day.toString())
-        Log.d("MyUtils month", month.toString())
-        Log.d("MyUtils type", type.toString())
-
         var mYear : String = year ?: Calendar.getInstance().get(Calendar.YEAR).toString()
         var mDay : String? = if ( day != null && day.toString() != "0" ) "&day=${day}" else ""
         var mMonth : String? = if ( month != null && month.toString() != "0" ) "&month=${month}" else ""
