@@ -100,4 +100,20 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra("type", type)
         resultLauncher.launch(intent)
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString("day", day)
+        outState.putString("month", month)
+        outState.putString("year", year)
+        outState.putString("category", type)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        day = savedInstanceState.getString("day")
+        month = savedInstanceState.getString("month")
+        year = savedInstanceState.getString("year")
+        type = savedInstanceState.getString("category")
+    }
 }
