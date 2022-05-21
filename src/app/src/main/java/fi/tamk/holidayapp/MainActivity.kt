@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         this.spinner = findViewById(R.id.spinnerList)
         this.filterList = findViewById(R.id.filterList)
         this.seeHolidays = findViewById(R.id.seeHolidays)
@@ -93,7 +94,10 @@ class MainActivity : AppCompatActivity() {
 
     fun moveToFilterScreen(seeFilters : View) {
         val intent = Intent(this, FilterActivity::class.java)
+        intent.putExtra("day", day)
+        intent.putExtra("month", month)
+        intent.putExtra("year", year)
+        intent.putExtra("type", type)
         resultLauncher.launch(intent)
-//        startActivity(intent)
     }
 }

@@ -1,5 +1,6 @@
 package fi.tamk.holidayapp
 
+import android.R.attr.button
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
@@ -9,7 +10,8 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import org.w3c.dom.Text
+import java.util.*
+
 
 class FilterActivity : AppCompatActivity() {
     lateinit var monthTitle : TextView
@@ -48,7 +50,6 @@ class FilterActivity : AppCompatActivity() {
         this.yearPicker = findViewById(R.id.yearPicker)
         yearPicker.minValue = 1970
         yearPicker.maxValue = 2049
-        yearPicker.value = 2022
 
         val categories = resources.getStringArray(R.array.categories)
         this.categoryTitle = findViewById(R.id.categoryTitle)
@@ -93,6 +94,11 @@ class FilterActivity : AppCompatActivity() {
                 finish()
             }
         }
+        val extras : Bundle? = intent.extras
+        dayPicker.value = extras?.getString("day")?.toInt() ?: 0
+        monthPicker.value = extras?.getString("month")?.toInt() ?: 0
+        yearPicker.value = extras?.getString("year")?.toInt() ?: Calendar.getInstance().get(Calendar.YEAR)
+        categoryPicker.value = extras?.getString("type")?.toInt() ?: 0
     }
 
     override fun onBackPressed() {
@@ -103,5 +109,21 @@ class FilterActivity : AppCompatActivity() {
         intent.putExtra("type", categoryPicker.value.toString())
         setResult(RESULT_OK, intent);
         super.onBackPressed()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putInt("day", dayPicker.value)
+        outState.putInt("month", monthPicker.value)
+        outState.putInt("year", yearPicker.value)
+        outState.putInt("category", categoryPicker.value)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        dayPicker.value = savedInstanceState.getInt("day")
+        monthPicker.value = savedInstanceState.getInt("month")
+        yearPicker.value = savedInstanceState.getInt("year")
+        categoryPicker.value = savedInstanceState.getInt("category")
     }
 }
