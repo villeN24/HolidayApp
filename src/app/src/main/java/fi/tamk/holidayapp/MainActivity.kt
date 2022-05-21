@@ -32,7 +32,8 @@ class MainActivity : AppCompatActivity() {
     var month : String? = null
     var year : String? = null
     var type : String? = null
-
+    lateinit var futureSwitch : Switch
+    var futureOnly : Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         this.spinner = findViewById(R.id.spinnerList)
         this.filterList = findViewById(R.id.filterList)
         this.seeHolidays = findViewById(R.id.seeHolidays)
+        this.futureSwitch = findViewById(R.id.futureSwitch)
         this.seeFilter = findViewById(R.id.seeFilters)
         this.filterList.addTextChangedListener { updateList() }
 //        fetchCountryList(this) {
@@ -57,7 +59,6 @@ class MainActivity : AppCompatActivity() {
                 TODO("Not yet implemented")
             }
         }
-
     }
     private fun updateList() {
         if (countryList != null) {
@@ -79,6 +80,7 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra("month", month)
         intent.putExtra("year", year)
         intent.putExtra("type", type)
+        intent.putExtra("futureOnly", futureSwitch.isChecked)
         startActivity(intent)
     }
 

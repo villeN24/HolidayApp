@@ -7,6 +7,17 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <Switch
+        android:id="@+id/futureSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="108dp"
+        android:layout_marginBottom="28dp"
+        android:minHeight="48dp"
+        android:text="Upcoming holidays only"
+        app:layout_constraintBottom_toTopOf="@+id/seeHolidays"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <EditText
         android:id="@+id/filterList"
         android:layout_width="match_parent"
@@ -60,6 +71,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:onClick="moveToFilterScreen"/>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

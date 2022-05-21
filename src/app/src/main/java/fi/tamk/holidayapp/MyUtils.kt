@@ -1,19 +1,17 @@
 package fi.tamk.holidayapp
 
-import android.content.ClipDescription
 import android.content.Context
-import android.os.Parcelable
 import android.util.Log
-import androidx.versionedparcelable.VersionedParcelize
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.Serializable
 import java.net.HttpURLConnection
 import java.net.URL
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.concurrent.thread
 
@@ -65,7 +63,7 @@ fun fetchCountryList(context : Context, callback : (data : MutableList<Country>?
     }
 }
 
-fun fetchHolidayList(context : Context, countryCode : String?, day : String?, month : String?, year : String?, type : String?, callback : (data : MutableList<Holiday>?) -> Unit) {
+fun fetchHolidayList(context : Context, countryCode : String?, day : String?, month : String?, year : String?, type : String?, futureOnly : Boolean, callback : (data : MutableList<Holiday>?) -> Unit) {
     thread {
         var mYear : String = year ?: Calendar.getInstance().get(Calendar.YEAR).toString()
         var mDay : String? = if ( day != null && day.toString() != "0" ) "&day=${day}" else ""
@@ -81,11 +79,25 @@ fun fetchHolidayList(context : Context, countryCode : String?, day : String?, mo
         Log.d("MyUtils", "https://calendarific.com/api/v2/holidays?&api_key=${API_KEY}&country=${countryCode}&year=${mYear}${mDay}${mMonth}${mType}")
         val response : ResponseObjectHolidays = ObjectMapper().readValue(json, ResponseObjectHolidays::class.java)
         val holidayList : HolidayListObj? = response.response
-        val holidays : MutableList<Holiday>? = holidayList?.holidays
+        var holidays : MutableList<Holiday>? = holidayList?.holidays
+        if(futureOnly) {
+            Log.d("MyUtils", "In futureOnly")
+            val isoDate : Int = LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE).toInt()
+            var filteredHolidays : MutableList<Holiday>? = holidays?.filter {
+                it.convertToBasicIsoDate().toInt() > isoDate
+            } as MutableList<Holiday>?
+            holidays = filteredHolidays
+        }
         callback(holidays)
     }
 }
 
+fun Holiday.convertToBasicIsoDate() : String {
+    val year = this.date?.datetime?.year
+    val month = String.format("%02d",this.date?.datetime?.month)
+    val day = String.format("%02d",this.date?.datetime?.day)
+    return "$year$month$day"
+}
 
 fun getUrl(url : String) : String? {
     var result : String? = null

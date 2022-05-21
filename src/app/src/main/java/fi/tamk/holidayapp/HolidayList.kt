@@ -37,7 +37,7 @@ class HolidayList : AppCompatActivity() {
 //        selectedCountry.text = "${extras.getString("country")} ${extras.getString("code")}"
 //        title = extras?.getString("country")
         fetchHolidayList(this, "FI",
-            extras?.getString("day"), extras?.getString("month"), extras?.getString("year"), extras?.getString("type")) {
+            extras?.getString("day"), extras?.getString("month"), extras?.getString("year"), extras?.getString("type"), extras?.getBoolean("futureOnly") ?: false) {
             if (it != null) {
                 for (item : Holiday in it) {
                     runOnUiThread {
