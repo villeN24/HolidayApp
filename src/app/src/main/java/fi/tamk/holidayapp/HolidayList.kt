@@ -1,20 +1,24 @@
 package fi.tamk.holidayapp
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
+import android.graphics.*
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.LayerDrawable
+import android.graphics.drawable.ShapeDrawable
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.BaseAdapter
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.get
-import fi.tamk.holidayapp.databinding.ActivityMainBinding
+import androidx.core.content.ContextCompat
+
 
 class HolidayList : AppCompatActivity() {
     lateinit var holidayList : ListView
@@ -36,7 +40,7 @@ class HolidayList : AppCompatActivity() {
         val extras : Bundle? = intent.extras
 //        selectedCountry.text = "${extras.getString("country")} ${extras.getString("code")}"
 //        title = extras?.getString("country")
-        fetchHolidayList(this, "FI",
+        fetchHolidayList(this, "US",
             extras?.getString("day"), extras?.getString("month"), extras?.getString("year"), extras?.getString("type"), extras?.getBoolean("futureOnly") ?: false) {
             if (it != null) {
                 for (item : Holiday in it) {
@@ -60,6 +64,20 @@ class MyAdapter(private val context : Activity, private val holidayList : Mutabl
             row = convertView
         }
 
+        Log.d("HolidayList", holidayList[position].type.toString())
+        Log.d("HolidayList", holidayList[position].type?.get(0)?.type.toString())
+
+        var shape : GradientDrawable = ContextCompat.getDrawable(context, R.drawable.holidayitem_bg) as GradientDrawable
+        shape.mutate()
+        when(holidayList[position].getHolidayType()) {
+            "national" -> shape.setStroke(4, ContextCompat.getColor(context, R.color.national))
+            "religious" -> shape.setStroke(4, ContextCompat.getColor(context, R.color.religious))
+            "local" -> shape.setStroke(4, ContextCompat.getColor(context, R.color.local))
+            "season" -> shape.setStroke(4, ContextCompat.getColor(context, R.color.observance))
+            else -> shape.setStroke(4, Color.WHITE)
+        }
+        row.background = shape
+        
         var name : TextView = row.findViewById(R.id.name)
         var desc : TextView = row.findViewById(R.id.desc)
         var date : TextView = row.findViewById(R.id.date)

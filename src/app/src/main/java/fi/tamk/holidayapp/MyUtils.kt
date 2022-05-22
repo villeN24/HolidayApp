@@ -116,3 +116,28 @@ fun getUrl(url : String) : String? {
     }
     return result
 }
+
+fun Holiday.getHolidayType() : String? {
+    var holiday : String? = this.type?.get(0)?.type?.lowercase()
+
+    if (holiday != null) {
+        if (holiday.contains("national")
+            || holiday.contains("bank")) return "national"
+
+        if (holiday.contains("local")) return "local"
+
+        if (holiday.contains("season")
+            || holiday.contains("observance")
+            || holiday.contains("times")
+            || holiday.contains("clock")
+            || holiday.contains("sport")) return "season"
+
+        if( holiday.contains("christ")
+            || holiday.contains("ortho")
+            || holiday.contains("hebrew")
+            || holiday.contains("jewish")
+            || holiday.contains("hindu")
+            || holiday.contains("muslim")) return "religious"
+    }
+    return null
+}

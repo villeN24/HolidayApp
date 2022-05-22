@@ -7,8 +7,8 @@
         android:id="@+id/holidayList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@color/white"
-        android:dividerHeight="1dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10.0sp"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
