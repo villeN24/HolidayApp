@@ -1,22 +1,13 @@
 package fi.tamk.holidayapp
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.net.wifi.WifiManager
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.core.widget.addTextChangedListener
-import java.time.Instant
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.util.*
 
 val allCountries = "https://calendarific.com/api/v2/countries?api_key=82412897a0bd6afebfd64c44eab3013ba5c88a52"
 
@@ -101,6 +92,8 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra("year", year)
         intent.putExtra("type", type)
         resultLauncher.launch(intent)
+        overridePendingTransition(R.anim.slide_in_bottom,
+            R.anim.slide_out_top)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

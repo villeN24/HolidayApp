@@ -1,11 +1,8 @@
 package fi.tamk.holidayapp
 
-import android.R.attr.button
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -109,6 +106,8 @@ class FilterActivity : AppCompatActivity() {
         intent.putExtra("type", categoryPicker.value.toString())
         setResult(RESULT_OK, intent);
         super.onBackPressed()
+        overridePendingTransition(R.anim.slide_in_top,
+            R.anim.slide_out_bottom)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
