@@ -7,18 +7,17 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
 import java.io.BufferedReader
 import java.io.InputStreamReader
-import java.io.Serializable
 import java.net.HttpURLConnection
 import java.net.URL
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.concurrent.thread
 
 val API_KEY = "82412897a0bd6afebfd64c44eab3013ba5c88a52"
 
-// Country listview
+// Needed Jackson parser helper classes for parsing
+// the api call containing all of the available countries
 @JsonIgnoreProperties(ignoreUnknown  = true)
 data class ResponseObjectCountries(var response : CountryList? = null)
 
@@ -34,7 +33,8 @@ data class Country(
     }
 }
 
-// Holiday listview
+// Needed Jackson parser helper classes for parsing the api
+// call all the holidays and their infos of a single country
 @JsonIgnoreProperties(ignoreUnknown  = true)
 data class ResponseObjectHolidays(var response : HolidayListObj? = null)
 
@@ -57,19 +57,47 @@ data class HolidayDateTime(var year : Int? = null, var month : Int? = null, var 
 @JsonIgnoreProperties(ignoreUnknown  = true)
 data class HolidayType(var type : String? = null)
 
+/**
+ * Fetches, formats and returns all available countries.
+ *
+ * Calls an url and receives a json object of data, deconstructs it
+ * to a kotlin friendly format, and returns formatted data.
+ *
+ * @param context The context of the call.
+ * @param callback A callback function to return the formatted data.
+ */
 fun fetchCountryList(context : Context, callback : (data : MutableList<Country>?) -> Unit) {
     thread {
         val json : String? = getUrl("https://calendarific.com/api/v2/countries?api_key=${API_KEY}")
         val response : ResponseObjectCountries = ObjectMapper().readValue(json, ResponseObjectCountries::class.java)
         val responseList : CountryList? = response.response
         val countries : MutableList<Country>? = responseList?.countries
-        Log.d("MyUtils", countries.toString())
         callback(countries)
     }
 }
 
+/**
+ * Fetches, formats and returns all required holidays.
+ *
+ * Calls an url with given filter parameters and receives a json
+ * object containing data, formats it to a kotlin-friendly format.
+ * Formats this data and returns it.
+ *
+ * @param context The context of the call.
+ * @param countryCode Required parameter that determines which country's
+ * holidays are to be returned. - Required
+ * @param day A parameter to filter results to a certain day. - Optional
+ * @param month Optional parameter to filter results to a certain month. - Optional
+ * @param year Required parameter that determines which year's holidays - Required
+ * are to be returned.
+ * @param type An optional parameter to filter results to a certain category. - Optional
+ * @param futureOnly A parameter that determines if holidays in history are to
+ * be included. - Optional
+ * @param callback A callback function to return the data.
+ */
 fun fetchHolidayList(context : Context, countryCode : String?, day : String?, month : String?, year : String?, type : String?, futureOnly : Boolean, callback : (data : MutableList<Holiday>?) -> Unit) {
     thread {
+        // Variables that are formatted to a format that can be added to the api call.
         var mYear : String = year ?: Calendar.getInstance().get(Calendar.YEAR).toString()
         var mDay : String? = if ( day != null && day.toString() != "0" ) "&day=${day}" else ""
         var mMonth : String? = if ( month != null && month.toString() != "0" ) "&month=${month}" else ""
@@ -85,6 +113,8 @@ fun fetchHolidayList(context : Context, countryCode : String?, day : String?, mo
         val response : ResponseObjectHolidays = ObjectMapper().readValue(json, ResponseObjectHolidays::class.java)
         val holidayList : HolidayListObj? = response.response
         var holidays : MutableList<Holiday>? = holidayList?.holidays
+
+        // If futureOnly is true, filters out holidays that are in history.
         if(futureOnly) {
             Log.d("MyUtils", "In futureOnly")
             val isoDate : Int = LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE).toInt()
@@ -97,6 +127,14 @@ fun fetchHolidayList(context : Context, countryCode : String?, day : String?, mo
     }
 }
 
+/**
+ * Converts a holiday objects date to a string.
+ *
+ * An extension function to a Holiday object, that parses
+ * objects date variables to a usable string format.
+ *
+ * @return A date formatted to a string form.
+ */
 fun Holiday.convertToBasicIsoDate() : String {
     val year = this.date?.datetime?.year
     val month = String.format("%02d",this.date?.datetime?.month)
@@ -104,6 +142,13 @@ fun Holiday.convertToBasicIsoDate() : String {
     return "$year$month$day"
 }
 
+/**
+ * Fetches and url and returns the result.
+ *
+ * @param url The url that is called.
+ *
+ * @return Returns the formatted data.
+ */
 fun getUrl(url : String) : String? {
     var result : String? = null
     val sb = StringBuffer()
@@ -122,6 +167,15 @@ fun getUrl(url : String) : String? {
     return result
 }
 
+/**
+ * Converts Holiday objects type to a usable format.
+ *
+ * An extension function to a Holiday object, that converts
+ * all known variations of categories, and formats them to
+ * more generic types.
+ *
+ * @return A generalized type in string format.
+ */
 fun Holiday.getHolidayType() : String? {
     var holiday : String? = this.type?.get(0)?.type?.lowercase()
 
