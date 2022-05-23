@@ -67,9 +67,6 @@ class MyAdapter(private val context : Activity, private val holidayList : Mutabl
             row = convertView
         }
 
-        Log.d("HolidayList", holidayList[position].type.toString())
-        Log.d("HolidayList", holidayList[position].type?.get(0)?.type.toString())
-
         var shape : GradientDrawable = ContextCompat.getDrawable(context, R.drawable.holidayitem_bg) as GradientDrawable
         shape.mutate()
         when(holidayList[position].getHolidayType()) {
@@ -82,12 +79,10 @@ class MyAdapter(private val context : Activity, private val holidayList : Mutabl
         row.background = shape
         
         var name : TextView = row.findViewById(R.id.name)
-        var desc : TextView = row.findViewById(R.id.desc)
         var date : TextView = row.findViewById(R.id.date)
         var type : TextView = row.findViewById(R.id.type)
 
         name.text = holidayList[position].name
-        desc.text = holidayList[position].description
         date.text = "${holidayList[position].date?.datetime?.day}." +
                 "${holidayList[position].date?.datetime?.month}." +
                 "${holidayList[position].date?.datetime?.year}"
@@ -96,7 +91,7 @@ class MyAdapter(private val context : Activity, private val holidayList : Mutabl
         holidayList[position].type?.forEach {
             typeList.add(it.type.toString())
         }
-        type.text = "Categories: ${typeList.joinToString(", ")}"
+        type.text = "${typeList.joinToString("\n")}"
 
         return row
     }
