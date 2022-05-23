@@ -4,7 +4,10 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.*
+import android.view.WindowManager
+import android.widget.ImageButton
+import android.widget.NumberPicker
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import java.util.*
@@ -66,7 +69,7 @@ class FilterActivity : AppCompatActivity() {
 
             val dialog = builder.create()
             dialog.show()
-            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
             hintText.text = """
             When filtering using any of the values, the search
             will include results that fulfill every condition
