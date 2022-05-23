@@ -33,11 +33,21 @@ class MainActivity : AppCompatActivity() {
         this.seeHolidays = findViewById(R.id.seeHolidays)
         this.futureSwitch = findViewById(R.id.futureSwitch)
         this.seeFilter = findViewById(R.id.seeFilters)
+        // Triggers a function to update spinnerlist whenever this
+        // components value is changed.
         this.filterList.addTextChangedListener { updateList() }
+        // Fetches the list of countries to be displayed in the spinner, and
+        // updates it if the response is not null.
         fetchCountryList(this) {
             if (it != null) countryList = it
             updateList()
         }
+        /**
+         * Creates a listener for the spinner component.
+         *
+         * Listens for actions in the spinner component, and
+         * stores the selected country in a variable when activated.
+         */
         this.spinner.onItemSelectedListener = object :
         AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -49,6 +59,15 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    /**
+     * Filters and updates spinner list with given input.
+     *
+     * Filters the list of countries with the text in EditText, and
+     * then creates a new adapter to the spinner with the filtered list.
+     * Afterwards updates the spinner ui with the new adapter. This function
+     * is triggered every time EditText's value changes.
+     */
     private fun updateList() {
         if (countryList != null) {
             var updatedList = countryList.filter { it.country_name!!.contains(filterList.text.toString(), ignoreCase = true) }
@@ -61,6 +80,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    /**
+     * Moves into holidaylist activity with data.
+     *
+     * Creates an intent with data, and moves with that
+     * data to the holidaylist activity.
+     */
     fun moveToHolidays(seeHolidays: View) {
         val intent = Intent(this, HolidayList::class.java)
         intent.putExtra("country", selectedCountry?.country_name)
@@ -74,17 +100,23 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        if (it.resultCode == Activity.RESULT_OK) {
-            val data : Intent? = it.data
-            day = data?.getStringExtra("day")
-            month = data?.getStringExtra("month")
-            year = data?.getStringExtra("year")
-            type = data?.getStringExtra("type")
-        }
-    }
-
+    /**
+     * Moves into Filter activity with data.
+     *
+     * Creates an intent with data, and moves into the filter activity
+     * with a custom sliding animation. The intent is launched with
+     * resultLauncher as this activity expects data back.
+     */
     fun moveToFilterScreen(seeFilters : View) {
+        var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                val data : Intent? = it.data
+                day = data?.getStringExtra("day")
+                month = data?.getStringExtra("month")
+                year = data?.getStringExtra("year")
+                type = data?.getStringExtra("type")
+            }
+        }
         val intent = Intent(this, FilterActivity::class.java)
         intent.putExtra("day", day)
         intent.putExtra("month", month)
@@ -95,6 +127,10 @@ class MainActivity : AppCompatActivity() {
             R.anim.slide_out_top)
     }
 
+
+    /**
+     * Saves data if the OS kills the activity.
+     */
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putString("day", day)
         outState.putString("month", month)
@@ -103,6 +139,9 @@ class MainActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
     }
 
+    /**
+     * Restored data saved in onSaveInstance if it was triggered.
+     */
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         day = savedInstanceState.getString("day")
