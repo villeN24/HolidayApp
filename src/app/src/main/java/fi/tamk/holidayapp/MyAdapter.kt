@@ -66,6 +66,9 @@ class MyAdapter(private val context : Activity, private val holidayList : Mutabl
         // for ease of displaying.
         type.text = "${typeList.joinToString("\n")}"
 
+        // Replaces separators with line breaks for ease of displaying.
+        locations.text = holidayList[position].locations?.replace(", ", "\n")
+
         return row
     }
 
