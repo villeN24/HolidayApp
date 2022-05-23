@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     var month : String? = null
     var year : String? = null
     var type : String? = null
+    var locations : String? = null
     lateinit var futureSwitch : Switch
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,10 +34,10 @@ class MainActivity : AppCompatActivity() {
         this.futureSwitch = findViewById(R.id.futureSwitch)
         this.seeFilter = findViewById(R.id.seeFilters)
         this.filterList.addTextChangedListener { updateList() }
-//        fetchCountryList(this) {
-//            if (it != null) countryList = it
-//            updateList()
-//        }
+        fetchCountryList(this) {
+            if (it != null) countryList = it
+            updateList()
+        }
         this.spinner.onItemSelectedListener = object :
         AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -68,6 +69,7 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra("month", month)
         intent.putExtra("year", year)
         intent.putExtra("type", type)
+        intent.putExtra("locations", locations)
         intent.putExtra("futureOnly", futureSwitch.isChecked)
         startActivity(intent)
     }

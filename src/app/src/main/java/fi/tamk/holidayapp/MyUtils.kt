@@ -13,6 +13,7 @@ import java.net.URL
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.concurrent.thread
 
 val API_KEY = "82412897a0bd6afebfd64c44eab3013ba5c88a52"
@@ -41,16 +42,20 @@ data class ResponseObjectHolidays(var response : HolidayListObj? = null)
 data class HolidayListObj(var holidays : MutableList<Holiday>? = null)
 
 @JsonIgnoreProperties(ignoreUnknown  = true)
-data class Holiday(var name : String? = null, var description : String? = null, var date : HolidayDate? = null, var type : MutableList<HolidayType>? = null) : Serializable
+data class Holiday(var name : String? = null,
+                   var description : String? = null,
+                   var date : HolidayDate? = null,
+                   var type : MutableList<HolidayType>? = null,
+                    var locations: String? = null)
 
 @JsonIgnoreProperties(ignoreUnknown  = true)
-data class HolidayDate(var datetime : HolidayDateTime? = null) : Serializable
+data class HolidayDate(var datetime : HolidayDateTime? = null)
 
 @JsonIgnoreProperties(ignoreUnknown  = true)
-data class HolidayDateTime(var year : Int? = null, var month : Int? = null, var day : Int? = null, var hour : Int? = null, var minute : Int? = null, var second : Int? = null) : Serializable
+data class HolidayDateTime(var year : Int? = null, var month : Int? = null, var day : Int? = null, var hour : Int? = null, var minute : Int? = null, var second : Int? = null)
 
 @JsonIgnoreProperties(ignoreUnknown  = true)
-data class HolidayType(var type : String? = null) : Serializable
+data class HolidayType(var type : String? = null)
 
 fun fetchCountryList(context : Context, callback : (data : MutableList<Country>?) -> Unit) {
     thread {

@@ -30,6 +30,7 @@ class HolidayList : AppCompatActivity() {
     lateinit var desc : TextView
     lateinit var date : TextView
     lateinit var type : TextView
+    lateinit var locations : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,12 +41,12 @@ class HolidayList : AppCompatActivity() {
         holidayList.adapter = holidayAdapter
         holidayList.setOnItemClickListener { parent, view, position, id ->
             val intent = Intent(this, HolidayCard::class.java)
-            intent.putExtra("holiday", holidayAdapter.getItem(position))
             val view = View.inflate(this, R.layout.holiday_card, null)
             this.name = view.findViewById(R.id.name)
             this.desc = view.findViewById(R.id.desc)
             this.date = view.findViewById(R.id.date)
             this.type = view.findViewById(R.id.type)
+            this.locations = view.findViewById(R.id.locations)
             val builder = AlertDialog.Builder(this)
             builder.setView(view)
 
@@ -63,6 +64,7 @@ class HolidayList : AppCompatActivity() {
                 typeList.add(it.type.toString())
             }
             type.text = "${typeList.joinToString("\n")}"
+            locations.text = holiday?.locations?.replace(", ", "\n")
 
             builder.setPositiveButton("OK") { dialogInterface : DialogInterface, i : Int ->
                 finish()
@@ -72,10 +74,10 @@ class HolidayList : AppCompatActivity() {
 
         val extras : Bundle? = intent.extras
 
-//        if (extras?.getString("country") != null) title = extras.getString("country")
-//        title = extras?.getString("country")
+        if (extras?.getString("country") != null) title = extras.getString("country")
+        title = extras?.getString("country")
 
-        fetchHolidayList(this, "US",
+        fetchHolidayList(this, extras?.getString("code"),
             extras?.getString("day"), extras?.getString("month"), extras?.getString("year"), extras?.getString("type"), extras?.getBoolean("futureOnly") ?: false) {
             if (it != null) {
                 for (item : Holiday in it) {
@@ -113,6 +115,7 @@ class MyAdapter(private val context : Activity, private val holidayList : Mutabl
         var name : TextView = row.findViewById(R.id.name)
         var date : TextView = row.findViewById(R.id.date)
         var type : TextView = row.findViewById(R.id.type)
+        var locations : TextView = row.findViewById(R.id.locations)
 
         name.text = holidayList[position].name
         date.text = "${holidayList[position].date?.datetime?.day}." +
@@ -124,6 +127,8 @@ class MyAdapter(private val context : Activity, private val holidayList : Mutabl
             typeList.add(it.type.toString())
         }
         type.text = "${typeList.joinToString("\n")}"
+        val locationsList = holidayList[position].locations?.split(",")?.toTypedArray()
+        locations.text = holidayList[position].locations?.replace(", ", "\n")
 
         return row
     }

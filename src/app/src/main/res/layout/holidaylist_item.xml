@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Waiting..."
-        android:textSize="22sp"
+        android:textSize="20dp"
         android:gravity="center"
         android:padding="20dp"
         android:layout_weight="2"/>
@@ -20,37 +20,61 @@
         android:layout_weight="2"
         android:paddingBottom="20dp">
 
-        <TextView
-            android:id="@+id/date"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Waiting..."
-            android:textSize="16sp"
-            android:layout_weight="1"/>
+            android:orientation="vertical"
+            android:layout_weight="2"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Locations:"
+                android:textAlignment="center"/>
+
+            <TextView
+                android:id="@+id/locations"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:textAlignment="center"/>
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_weight="2">
+            android:layout_weight="2"
+            android:padding="5dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Categories:"
-                android:textSize="16sp"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:text="Type of holiday:"
+                android:textAlignment="center"/>
 
             <TextView
                 android:id="@+id/type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Waiting..."
-                android:textSize="14sp"
-                android:layout_weight="3"/>
+                android:layout_weight="3"
+                android:textAlignment="center"/>
 
         </LinearLayout>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:textAlignment="center"
+        android:paddingBottom="10dp"/>
 
 </LinearLayout>
