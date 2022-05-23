@@ -1,6 +1,7 @@
 package fi.tamk.holidayapp
 
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.*
 import android.graphics.drawable.Drawable
@@ -16,13 +17,19 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import org.w3c.dom.Text
 
 
 class HolidayList : AppCompatActivity() {
     lateinit var holidayList : ListView
     lateinit var holidayAdapter : MyAdapter
+    lateinit var name : TextView
+    lateinit var desc : TextView
+    lateinit var date : TextView
+    lateinit var type : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,15 +41,40 @@ class HolidayList : AppCompatActivity() {
         holidayList.setOnItemClickListener { parent, view, position, id ->
             val intent = Intent(this, HolidayCard::class.java)
             intent.putExtra("holiday", holidayAdapter.getItem(position))
-            startActivity(intent)
+            val view = View.inflate(this, R.layout.holiday_card, null)
+            this.name = view.findViewById(R.id.name)
+            this.desc = view.findViewById(R.id.desc)
+            this.date = view.findViewById(R.id.date)
+            this.type = view.findViewById(R.id.type)
+            val builder = AlertDialog.Builder(this)
+            builder.setView(view)
+
+            val dialog = builder.create()
+            dialog.show()
+
+            val holiday = holidayAdapter.getItem(position)
+            name.text = holiday?.name
+            desc.text = holiday?.description
+            date.text = "${holiday?.date?.datetime?.day}." +
+                    "${holiday?.date?.datetime?.month}." +
+                    "${holiday?.date?.datetime?.year}"
+            var typeList : ArrayList<String> = arrayListOf()
+            holiday?.type?.forEach {
+                typeList.add(it.type.toString())
+            }
+            type.text = "${typeList.joinToString("\n")}"
+
+            builder.setPositiveButton("OK") { dialogInterface : DialogInterface, i : Int ->
+                finish()
+            }
+
         }
 
         val extras : Bundle? = intent.extras
 
-        title = "Finland"
 //        if (extras?.getString("country") != null) title = extras.getString("country")
-//        selectedCountry.text = "${extras.getString("country")} ${extras.getString("code")}"
 //        title = extras?.getString("country")
+
         fetchHolidayList(this, "US",
             extras?.getString("day"), extras?.getString("month"), extras?.getString("year"), extras?.getString("type"), extras?.getBoolean("futureOnly") ?: false) {
             if (it != null) {

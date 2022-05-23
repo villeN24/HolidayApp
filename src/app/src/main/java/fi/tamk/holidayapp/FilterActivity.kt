@@ -94,6 +94,7 @@ class FilterActivity : AppCompatActivity() {
                 finish()
             }
         }
+
         val extras : Bundle? = intent.extras
         dayPicker.value = extras?.getString("day")?.toInt() ?: 0
         monthPicker.value = extras?.getString("month")?.toInt() ?: 0
