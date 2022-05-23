@@ -22,7 +22,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import org.w3c.dom.Text
 
-
+/**
+ * The activity for displaying a list of holidays.
+ *
+ * Displays a list of holidays of the country of choosing.
+ * Includes rows color coded by category of the holiday, and
+ * a card view to display additional info when clicking a row.
+ */
 class HolidayList : AppCompatActivity() {
     lateinit var holidayList : ListView
     lateinit var holidayAdapter : MyAdapter
@@ -39,8 +45,9 @@ class HolidayList : AppCompatActivity() {
         this.holidayList = findViewById(R.id.holidayList)
         holidayAdapter = MyAdapter(this, mutableListOf<Holiday>())
         holidayList.adapter = holidayAdapter
+        // Create a listener for a row item, and trigger a card dialog
+        // containing additional info when clicked.
         holidayList.setOnItemClickListener { parent, view, position, id ->
-            val intent = Intent(this, HolidayCard::class.java)
             val view = View.inflate(this, R.layout.holiday_card, null)
             this.name = view.findViewById(R.id.name)
             this.desc = view.findViewById(R.id.desc)
@@ -59,24 +66,30 @@ class HolidayList : AppCompatActivity() {
             date.text = "${holiday?.date?.datetime?.day}." +
                     "${holiday?.date?.datetime?.month}." +
                     "${holiday?.date?.datetime?.year}"
+
             var typeList : ArrayList<String> = arrayListOf()
             holiday?.type?.forEach {
                 typeList.add(it.type.toString())
             }
+            // Joins an array of strings into a one string with line breaks
+            // for ease of displaying.
             type.text = "${typeList.joinToString("\n")}"
+            // Finds strings separated by ", " and replaces them with line breaks
+            // for ease of displaying.
             locations.text = holiday?.locations?.replace(", ", "\n")
 
             builder.setPositiveButton("OK") { dialogInterface : DialogInterface, i : Int ->
                 finish()
             }
-
         }
 
         val extras : Bundle? = intent.extras
-
+        // Change the title of the screen to the selected country.
         if (extras?.getString("country") != null) title = extras.getString("country")
         title = extras?.getString("country")
 
+        // Fetches the list of holidays with given arguments, and
+        // creates an adapter with them to display the info.
         fetchHolidayList(this, extras?.getString("code"),
             extras?.getString("day"), extras?.getString("month"), extras?.getString("year"), extras?.getString("type"), extras?.getBoolean("futureOnly") ?: false) {
             if (it != null) {
@@ -88,51 +101,6 @@ class HolidayList : AppCompatActivity() {
             }
         }
     }
-}
-class MyAdapter(private val context : Activity, private val holidayList : MutableList<Holiday>) : ArrayAdapter<Holiday>(context, R.layout.holidaylist_item, holidayList) {
-
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        var row : View
-
-        if (convertView == null) {
-            val inflater : LayoutInflater = LayoutInflater.from(context)
-            row = inflater.inflate(R.layout.holidaylist_item, null)
-        } else {
-            row = convertView
-        }
-
-        var shape : GradientDrawable = ContextCompat.getDrawable(context, R.drawable.holidayitem_bg) as GradientDrawable
-        shape.mutate()
-        when(holidayList[position].getHolidayType()) {
-            "national" -> shape.setStroke(4, ContextCompat.getColor(context, R.color.national))
-            "religious" -> shape.setStroke(4, ContextCompat.getColor(context, R.color.religious))
-            "local" -> shape.setStroke(4, ContextCompat.getColor(context, R.color.local))
-            "season" -> shape.setStroke(4, ContextCompat.getColor(context, R.color.observance))
-            else -> shape.setStroke(4, Color.WHITE)
-        }
-        row.background = shape
-        
-        var name : TextView = row.findViewById(R.id.name)
-        var date : TextView = row.findViewById(R.id.date)
-        var type : TextView = row.findViewById(R.id.type)
-        var locations : TextView = row.findViewById(R.id.locations)
-
-        name.text = holidayList[position].name
-        date.text = "${holidayList[position].date?.datetime?.day}." +
-                "${holidayList[position].date?.datetime?.month}." +
-                "${holidayList[position].date?.datetime?.year}"
-
-        var typeList : ArrayList<String> = arrayListOf()
-        holidayList[position].type?.forEach {
-            typeList.add(it.type.toString())
-        }
-        type.text = "${typeList.joinToString("\n")}"
-        val locationsList = holidayList[position].locations?.split(",")?.toTypedArray()
-        locations.text = holidayList[position].locations?.replace(", ", "\n")
-
-        return row
-    }
-
 }
 
 
