@@ -16,8 +16,8 @@
             android:id="@+id/hintButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_question_mark_24"
-            android:background="@color/purple_200"
+            android:src="@drawable/ic_question_mark"
+            android:background="@drawable/hint_button"
             android:layout_margin="8dp"
             android:padding="14dp"/>
             />
