@@ -4,21 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     tools:context=".MainActivity"
     android:theme="@style/Theme.HolidayApp">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0px"
+        android:layout_width="0px"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
-        android:layout_weight="9">
+        android:layout_weight="1">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0px"
-            android:layout_weight="2"/>
 
         <EditText
             android:id="@+id/filterList"
@@ -27,9 +23,8 @@
             android:hint="filter list"
             android:inputType="textPersonName"
             android:backgroundTint="@color/green_highlight"
-            android:layout_weight="1"
-            android:layout_marginTop="20dp"
-            android:layout_marginHorizontal="20dp"/>
+            android:layout_marginHorizontal="30dp"
+            android:layout_weight="1"/>
 
         <Spinner
             android:id="@+id/spinnerList"
@@ -37,19 +32,34 @@
             android:layout_height="0px"
             android:backgroundTint="@color/green_highlight"
             android:layout_weight="1"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginHorizontal="30dp"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0px"
-            android:layout_weight="6"/>
+            android:layout_weight="3"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0px"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_weight="1">
+
 
         <Switch
             android:id="@+id/futureSwitch"
             android:layout_width="wrap_content"
             android:layout_height="0px"
             android:text="Upcoming holidays only"
+            android:layout_weight="1"/>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="0px"
             android:layout_weight="1"/>
 
         <android.widget.Button
@@ -61,17 +71,13 @@
             android:textAlignment="center"
             android:background="@drawable/common_button"
             android:onClick="moveToHolidays"
-            android:layout_margin="10dp"
-            android:padding="14dp"
-            android:layout_weight="3"/>
+            android:padding="20dp"
+            android:layout_weight="3" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0px"
-        android:gravity="center"
-        android:layout_weight="1">
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="0px"
+            android:layout_weight="1"/>
 
         <android.widget.Button
             android:id="@+id/seeFilters"
@@ -79,16 +85,16 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:background="@drawable/common_button"
-            android:padding="10dp"
             android:text="Set more filters"
+            android:padding="10dp"
             android:onClick="moveToFilterScreen"
             android:textAlignment="center" />
 
-    </LinearLayout>
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="0px"
+            android:layout_weight="1"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0px"
-        android:layout_weight="1"/>
+    </LinearLayout>
 
 </LinearLayout>
