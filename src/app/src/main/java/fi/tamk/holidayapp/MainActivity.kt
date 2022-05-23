@@ -121,15 +121,6 @@ class MainActivity : AppCompatActivity() {
      * resultLauncher as this activity expects data back.
      */
     fun moveToFilterScreen(seeFilters : View) {
-        var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
-                val data : Intent? = it.data
-                day = data?.getStringExtra("day")
-                month = data?.getStringExtra("month")
-                year = data?.getStringExtra("year")
-                type = data?.getStringExtra("type")
-            }
-        }
         val intent = Intent(this, FilterActivity::class.java)
         intent.putExtra("day", day)
         intent.putExtra("month", month)
@@ -138,6 +129,16 @@ class MainActivity : AppCompatActivity() {
         resultLauncher.launch(intent)
         overridePendingTransition(R.anim.slide_in_bottom,
             R.anim.slide_out_top)
+    }
+
+    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            val data : Intent? = it.data
+            day = data?.getStringExtra("day")
+            month = data?.getStringExtra("month")
+            year = data?.getStringExtra("year")
+            type = data?.getStringExtra("type")
+        }
     }
 
 
