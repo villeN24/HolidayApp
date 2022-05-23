@@ -38,6 +38,9 @@ class HolidayList : AppCompatActivity() {
         }
 
         val extras : Bundle? = intent.extras
+
+        title = "Finland"
+//        if (extras?.getString("country") != null) title = extras.getString("country")
 //        selectedCountry.text = "${extras.getString("country")} ${extras.getString("code")}"
 //        title = extras?.getString("country")
         fetchHolidayList(this, "US",
