@@ -1,3 +1,8 @@
+/**
+ * @author Ville Naalisvaara <ville.naalisvaara@tuni.fi>
+ * @since 2022.05.23
+ */
+
 package fi.tamk.holidayapp
 
 import android.app.Activity
@@ -9,6 +14,14 @@ import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.addTextChangedListener
 
+/**
+ * The main activity of the app.
+ *
+ * Includes a few selectors, and a button to enter an activity
+ * containing a list of holidays of the country of choosing.
+ * Also includes a button for moving to a filter activity if
+ * additional filtering is desired.
+ */
 class MainActivity : AppCompatActivity() {
     lateinit var spinner : Spinner
     lateinit var adapter : ArrayAdapter<Country>
