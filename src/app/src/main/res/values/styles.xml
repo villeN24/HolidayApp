@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MyTheme"
+        parent="@style/Theme.HolidayApp">
+        <!--   Primary Color -->
+        <item name="colorPrimary">@color/green_highlight</item>
+        <!--   darker variant for the status bar and contextual app bars -->
+        <item name="colorPrimaryDark">@color/green_dark</item>
+        <!--   theme UI controls like checkboxes and text fields -->
+        <item name="colorAccent">@color/yellow_highlight</item>
+    </style>
+
+</resources>
