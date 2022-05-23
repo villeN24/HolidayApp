@@ -19,7 +19,7 @@ class FilterActivity : AppCompatActivity() {
     lateinit var yearPicker : NumberPicker
     lateinit var categoryTitle : TextView
     lateinit var categoryPicker : NumberPicker
-    lateinit var hintButton : Button
+    lateinit var hintButton : ImageButton
     lateinit var hintText : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
