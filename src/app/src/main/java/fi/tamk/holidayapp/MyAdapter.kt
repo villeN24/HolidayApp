@@ -10,8 +10,21 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 
+/**
+ * A custom class for displaying the holiday list.
+ *
+ * A class that extends basic ArrayAdapter class. Was
+ * created in order to populate holiday list with more
+ * complex views than the normal adapter allows.
+ */
 class MyAdapter(private val context : Activity, private val holidayList : MutableList<Holiday>) : ArrayAdapter<Holiday>(context, R.layout.holidaylist_item, holidayList) {
 
+    /**
+     * Creates and returns a view for displaying.
+     *
+     * Overridden function in order to create more complex
+     * views to return, and to add additional logic to the function.
+     */
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var row : View
 
@@ -22,8 +35,10 @@ class MyAdapter(private val context : Activity, private val holidayList : Mutabl
             row = convertView
         }
 
+        // Create a drawable in order to paint border to the view.
         var shape : GradientDrawable = ContextCompat.getDrawable(context, R.drawable.holidayitem_bg) as GradientDrawable
         shape.mutate()
+        // Color codes the row border with the corresponding category.
         when(holidayList[position].getHolidayType()) {
             "national" -> shape.setStroke(4, ContextCompat.getColor(context, R.color.national))
             "religious" -> shape.setStroke(4, ContextCompat.getColor(context, R.color.religious))
@@ -47,9 +62,9 @@ class MyAdapter(private val context : Activity, private val holidayList : Mutabl
         holidayList[position].type?.forEach {
             typeList.add(it.type.toString())
         }
+        // Joins an array of strings into a one string with line breaks
+        // for ease of displaying.
         type.text = "${typeList.joinToString("\n")}"
-        val locationsList = holidayList[position].locations?.split(",")?.toTypedArray()
-        locations.text = holidayList[position].locations?.replace(", ", "\n")
 
         return row
     }
