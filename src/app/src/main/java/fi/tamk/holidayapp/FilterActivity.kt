@@ -4,7 +4,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.NumberPicker
 import android.widget.TextView
@@ -12,7 +11,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import java.util.*
 
-
+/**
+ * The activity for adding filters.
+ *
+ * An activity, that includes multiple scrollabe selectors that
+ * are used for selecting additional parameters. These parameters
+ * are used to filter the list of holidays if selected.
+ */
 class FilterActivity : AppCompatActivity() {
     lateinit var monthTitle : TextView
     lateinit var monthPicker : NumberPicker
@@ -29,6 +34,8 @@ class FilterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_filter)
 
+        // Create a number picker with one string choice
+        // for choosing a day or all.
         var dayList = mutableListOf("All")
         for (i in 1 .. 31) {
             dayList.add(i.toString())
@@ -39,6 +46,8 @@ class FilterActivity : AppCompatActivity() {
         dayPicker.maxValue = 31
         dayPicker.displayedValues = dayList.toTypedArray()
 
+        // Create a number picker of displayed string values
+        // with a string resource file for choosing a month or all.
         val months = resources.getStringArray(R.array.months)
         this.monthTitle = findViewById(R.id.monthTitle)
         this.monthPicker = findViewById(R.id.monthPicker)
@@ -46,11 +55,14 @@ class FilterActivity : AppCompatActivity() {
         monthPicker.maxValue = 12
         monthPicker.displayedValues = months
 
+        // Create a number picker for selecting a year.
         this.yearTitle = findViewById(R.id.yearTitle)
         this.yearPicker = findViewById(R.id.yearPicker)
         yearPicker.minValue = 1970
         yearPicker.maxValue = 2049
 
+        // Create a number picker of displayed string values
+        // with a string resource file for choosing a category or all.
         val categories = resources.getStringArray(R.array.categories)
         this.categoryTitle = findViewById(R.id.categoryTitle)
         this.categoryPicker = findViewById(R.id.categoryPicker)
@@ -58,10 +70,10 @@ class FilterActivity : AppCompatActivity() {
         categoryPicker.maxValue = 4
         categoryPicker.displayedValues = categories
 
-
+        // Create a button, and set a click listener on it. If triggered,
+        // creates a card dialog with text to be displayed.
         this.hintButton = findViewById(R.id.hintButton)
         hintButton.setOnClickListener {
-
             val view = View.inflate(this, R.layout.hint_alert, null)
             this.hintText = view.findViewById(R.id.generalInst)
             val builder = AlertDialog.Builder(this)
@@ -95,6 +107,7 @@ class FilterActivity : AppCompatActivity() {
             }
         }
 
+        // Set number picker starting values if given
         val extras : Bundle? = intent.extras
         dayPicker.value = extras?.getString("day")?.toInt() ?: 0
         monthPicker.value = extras?.getString("month")?.toInt() ?: 0
@@ -102,6 +115,14 @@ class FilterActivity : AppCompatActivity() {
         categoryPicker.value = extras?.getString("type")?.toInt() ?: 0
     }
 
+    /**
+     * Overrides the onBackPressed function.
+     *
+     * Detects if the user presses a button to return to
+     * an earlier view. Creates an intent with data, returns
+     * said intent, and triggers an animation before returning
+     * to an earlier activity.
+     */
     override fun onBackPressed() {
         val intent = Intent()
         intent.putExtra("day", dayPicker.value.toString())
@@ -114,6 +135,9 @@ class FilterActivity : AppCompatActivity() {
             R.anim.slide_out_bottom)
     }
 
+    /**
+     * Saves data if the OS kills the activity.
+     */
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putInt("day", dayPicker.value)
         outState.putInt("month", monthPicker.value)
@@ -122,6 +146,9 @@ class FilterActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
     }
 
+    /**
+     * Restored data saved in onSaveInstance if it was triggered.
+     */
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         dayPicker.value = savedInstanceState.getInt("day")
