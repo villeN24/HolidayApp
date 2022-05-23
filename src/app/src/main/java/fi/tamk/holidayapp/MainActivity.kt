@@ -9,8 +9,6 @@ import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.addTextChangedListener
 
-val allCountries = "https://calendarific.com/api/v2/countries?api_key=82412897a0bd6afebfd64c44eab3013ba5c88a52"
-
 class MainActivity : AppCompatActivity() {
     lateinit var spinner : Spinner
     lateinit var adapter : ArrayAdapter<Country>
@@ -24,7 +22,6 @@ class MainActivity : AppCompatActivity() {
     var year : String? = null
     var type : String? = null
     lateinit var futureSwitch : Switch
-    var futureOnly : Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
